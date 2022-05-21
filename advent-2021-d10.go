@@ -1,11 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
 
 func main() {
 
 	opened := []string{}
 	errors := map[string]int{}
+	inputs := ReadFile() // remove for hardcoded input
 
 	for _, input := range inputs {
 		for i := 0; i < len(input); i++ {
@@ -54,15 +59,35 @@ var scores = map[string]int{
 	">": 25137,
 }
 
-var inputs = []string{
-	"[({(<(())[]>[[{[]{<()<>>",
-	"[(()[<>])]({[<{<<[]>>(",
-	"{([(<{}[<>[]}>{[]{[(<()>",
-	"(((({<>}<{<{<>}{[]{[]{}",
-	"[[<[([]))<([[{}[[()]]]",
-	"[{[{({}]{}}([{[{{{}}([]",
-	"{<[[]]>}<{[{[{[]{()[[[]",
-	"[<(<(<(<{}))><([]([]()",
-	"<{([([[(<>()){}]>(<<{{",
-	"<{([{{}}[<[[[<>{}]]]>[]]",
+// Input hardcoded
+
+// var inputs = []string{
+// 	"[({(<(())[]>[[{[]{<()<>>",
+// 	"[(()[<>])]({[<{<<[]>>(",
+// 	"{([(<{}[<>[]}>{[]{[(<()>",
+// 	"(((({<>}<{<{<>}{[]{[]{}",
+// 	"[[<[([]))<([[{}[[()]]]",
+// 	"[{[{({}]{}}([{[{{{}}([]",
+// 	"{<[[]]>}<{[{[{[]{()[[[]",
+// 	"[<(<(<(<{}))><([]([]()",
+// 	"<{([([[(<>()){}]>(<<{{",
+// 	"<{([{{}}[<[[[<>{}]]]>[]]",
+// }
+
+// Read input from text file
+
+func ReadFile() []string {
+
+	readFile, err := os.Open("input.txt")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fileScanner := bufio.NewScanner(readFile)
+	fileScanner.Split(bufio.ScanLines)
+	lines := []string{}
+	for fileScanner.Scan() {
+		lines = append(lines, fileScanner.Text())
+	}
+	defer readFile.Close()
+	return lines
 }
